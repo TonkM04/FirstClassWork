@@ -1,7 +1,7 @@
 # Bengali Chicken Curry
 
-This is a homemade Bengali style chicken curry that can be cooked at home.
-It uses simple ingredients and tastes similar to traditional home cooking.
+*This is a homemade Bengali-style chicken curry that can be cooked at home.
+It uses simple ingredients and tastes similar to traditional home cooking.*
 
 ## Ingredients
 - Chicken drumsticks
@@ -15,13 +15,13 @@ It uses simple ingredients and tastes similar to traditional home cooking.
 - Water
 
 ## Instructions
-1. Chop the onion and tomato.
-2. Heat oil in a pan.
-3. Cook the onion until browned.
-4. Add ginger and garlic paste.
-5. Add tomato and cook until soft.
-6. Add curry powder mix.
-7. Add chicken and cook for a few minutes.
-8. Add water and salt.
-9. Cook for about 20 minutes.
-10. Add garam masala and turn off the heat.
+1. **Step 1:** Chop the onion and tomato.
+2. **Step 2:** Heat oil in a pan.
+3. **Step 3:** Cook the onion until browned.
+4. **Step 4:** Add ginger and garlic paste.
+5. **Step 5:** Add tomato and cook until soft.
+6. **Step 6:** Add curry powder mix.
+7. **Step 7:** Add chicken and cook for a few minutes.
+8. **Step 8:** Add water and salt.
+9. **Step 9:** Cook for about 20 minutes.
+10. **Step 10:** Add garam masala and turn off the heat.
