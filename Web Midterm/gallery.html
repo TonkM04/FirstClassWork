@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery — Learning to See</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Montserrat:wght@300;400&display=swap">
+  <style>
+    /* Gallery layout */
+    .page-hero {
+      padding: 140px 60px 60px;
+      text-align: center;
+    }
+
+    .page-hero h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 64px;
+      font-weight: 300;
+      color: #f0ece4;
+    }
+
+    .page-hero h1 em {
+      font-style: italic;
+      color: #e8cfa0;
+    }
+
+    /* Use flexbox layout */
+    /* Create a flexible layout. flex-wrap makeds items to move to the next line.*/
+    .full-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 20px 40px 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Set width to about one third */
+    .g-portrait {
+      flex: 0 0 32%;
+    }
+    .g-portrait img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover; /* Make image fill container without distortion */
+      object-position: top;
+      display: block;
+      transition: transform 0.4s;
+    }
+
+    .g-landscape {
+      flex: 0 0 65%;
+    }
+    .g-landscape img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.4s;
+    }
+
+    .g-wide {
+      flex: 0 0 100%;
+    }
+    .g-wide img {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.4s; /* Smooth animation */
+    }
+
+    /* Slight zoom on hover */
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Responsive design on smaller screens like phones. */
+    @media screen and (max-width: 768px) {
+      .page-hero { padding: 110px 24px 50px; }
+      .page-hero h1 { font-size: 44px; }
+      .full-gallery { padding: 0 16px 80px; }
+      .g-portrait,
+      .g-landscape,
+      .g-wide { flex: 0 0 100%; }
+      .g-portrait img,
+      .g-landscape img,
+      .g-wide img { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="nav" class="scrolled">
+    <a href="./index.html" class="logo">Learning to See</a>
+    <ul>
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./gallery.html" class="current">Gallery</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Page title -->
+    <header class="page-hero">
+      <p class="section-tag">All Photos</p>
+      <hr class="gold-line">
+      <h1>The <em>Archive</em></h1>
+    </header>
+
+    <div style="background-color: #0d0c0a; padding-top: 10px;">
+      <div class="full-gallery">
+
+        <!-- Line1 horizontal -->
+        <figure class="gallery-item g-wide">
+          <img src="./img/p11.jpg" alt="New York skyline at dusk" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 2 vertical -->
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p02.jpg" alt="Man on bench" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p12.jpg" alt="Guitarist in the rain" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p13.jpg" alt="Woman on ferry" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 3: horizontal + vertical  -->
+        <figure class="gallery-item g-landscape">
+          <img src="./img/p08.jpg" alt="Red ribbons" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p04.jpg" alt="Buddha statue" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 4: vervitcal -->
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p05.jpg" alt="Portrait" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p06.jpg" alt="Portrait by window" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p16.jpg" alt="Chess player" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 5: horizontal -->
+        <figure class="gallery-item g-wide">
+          <img src="./img/p14.jpg" alt="Staten Island ferry" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 6: vertical + horizontal -->
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p17.jpg" alt="Temple courtyard" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-landscape">
+          <img src="./img/p01.jpg" alt="Food" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 7: vertical -->
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p10.jpg" alt="Saxophone" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p15.jpg" alt="Drummer" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p03.jpg" alt="Kid on bench" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 8: horizontal + vertical -->
+        <figure class="gallery-item g-landscape">
+          <img src="./img/p18.jpg" alt="Car in golden light" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p09.jpg" alt="Statue through circle" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 9: vertical + horizontal -->
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p07.jpg" alt="Cat" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-landscape">
+          <img src="./img/p19.jpg" alt="Food close-up" onclick="showBig(this)">
+        </figure>
+
+        <!-- Line 10: vertical -->
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p20.jpg" alt="Lighthouse and sculptures" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p21.jpg" alt="People on stairs" onclick="showBig(this)">
+        </figure>
+        <figure class="gallery-item g-portrait">
+          <img src="./img/p22.jpg" alt="City skyline at night" onclick="showBig(this)">
+        </figure>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p class="footer-logo">Learning to See</p>
+    <p class="footer-copy">&copy; Copyright 2026 Leanring to See, all rights reserved.</p>
+  </footer>
+
+  <!-- Click the picture and show it -->
+  <div id="overlay" onclick="hideBig()">
+    <img id="big-img" src="" alt="">
+    <p id="close-hint">click to close</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var nav = document.getElementById('nav');
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 50) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      });
+    });
+
+    function showBig(img) {
+      document.getElementById('big-img').src = img.src;
+      document.getElementById('big-img').alt = img.alt;
+      document.getElementById('overlay').classList.add('current');
+    }
+
+    function hideBig() {
+      document.getElementById('overlay').classList.remove('current');
+    }
+  </script>
+
+</body>
+</html>
