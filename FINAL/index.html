@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learning to See</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Montserrat:wght@300;400&display=swap">
+</head>
+<body>
+
+  <!-- ISO noise overlays -->
+  <div id="noise-overlay"></div>
+
+  <canvas id="grain-canvas"></canvas>
+
+  <!-- Greeting overlay -->
+  <div id="greeting-overlay">
+    <div class="greeting-box">
+      <p class="section-tag">Welcome</p>
+      <hr class="gold-line">
+      <h2>Before you <em>explore</em></h2>
+      <p>What's your name?<br>I'll remember it for next time.</p>
+      <input type="text" id="greeting-input" placeholder="Your name" maxlength="40">
+      <button id="greeting-btn">Enter</button>
+    </div>
+  </div>
+
+  <!-- Welcome bar -->
+  <div id="welcome-bar"></div>
+
+  <!-- Navigation -->
+  <nav id="nav">
+    <a href="./index.html" class="logo">Learning to See</a>
+
+    <div class="cam-controls-nav">
+      <div class="cam-ctrl">
+        <span class="cam-ctrl-label">Aperture</span>
+        <div class="cam-ctrl-row">
+          <input type="range" id="aperture-slider" min="1" max="10" value="6">
+          <span class="cam-ctrl-value" id="aperture-value">f/8</span>
+        </div>
+      </div>
+      <div class="cam-ctrl">
+        <span class="cam-ctrl-label">Shutter</span>
+        <div class="cam-ctrl-row">
+          <input type="range" id="shutter-slider" min="1" max="10" value="4">
+          <span class="cam-ctrl-value" id="shutter-value">1/125s</span>
+        </div>
+      </div>
+      <div class="cam-ctrl">
+        <span class="cam-ctrl-label">ISO</span>
+        <div class="cam-ctrl-row">
+          <input type="range" id="iso-slider" min="1" max="10" value="3">
+          <span class="cam-ctrl-value" id="iso-value">400</span>
+        </div>
+      </div>
+    </div>
+
+    <ul>
+      <li><a href="./index.html" class="current">Home</a></li>
+      <li><a href="./gallery.html">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- All page content wrapped so aperture blur targets it -->
+  <div id="content-wrap">
+
+    <section id="hero">
+      <div class="hero-text">
+        <p class="eyebrow">A Beginner's Journal</p>
+        <h1>Still <em>Learning</em><br>How to See</h1>
+        <p class="hero-sub">Not every shot is perfect.<br>But every shot is progress.</p>
+      </div>
+    </section>
+
+    <section id="intro">
+      <p class="section-tag">About the Work</p>
+      <hr class="gold-line">
+      <h2>I'm not a photographer.<br>I just <em>love taking pictures.</em></h2>
+      <p>Every photo I take is a memory of a moment that meant something to me. Not technically perfect, but real.</p>
+      <p>This site is where I keep track of my progress. And if you're someone who also loves shooting just for the fun of it, I'd love to connect.</p>
+    </section>
+
+    <section id="gallery">
+      <p class="section-tag">Selected Shots</p>
+      <hr class="gold-line">
+      <div class="gallery-grid" id="random-grid"></div>
+      <a href="./gallery.html" class="btn">View All Photos</a>
+    </section>
+
+    <section id="gear">
+      <p class="section-tag">Gear I Shoot With</p>
+      <hr class="gold-line">
+      <div class="gear-grid">
+        <div class="gear-card"><h3>Canon EOS R8</h3></div>
+        <div class="gear-card"><h3>EF 24-105mm f/4</h3></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <p class="section-tag">Get in Touch</p>
+      <hr class="gold-line">
+      <h2>Let's <em>Shoot Together</em></h2>
+      <p class="contact-desc">
+        Two things I'm looking for:<br><br>
+        Someone to <strong>go out and shoot with</strong>.<br><br>
+        Someone who wants a <strong>free portrait taken</strong>.
+      </p>
+      <form id="contact-form" method="GET">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="uname">Name</label>
+            <input type="text" id="uname" name="name" placeholder="Your name">
+            <p class="field-error" id="error-name">Please enter your name</p>
+          </div>
+          <div class="form-group">
+            <label for="uemail">Email</label>
+            <input type="text" id="uemail" name="email" placeholder="Your email">
+            <p class="field-error" id="error-email">Please enter a valid email</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="umsg">Message</label>
+          <textarea id="umsg" name="message" rows="5" placeholder="Say hi..."></textarea>
+          <p class="field-error" id="error-msg">Please enter a message</p>
+        </div>
+        <button type="submit">Send Message</button>
+        <!-- Simple success message, no modal -->
+        <p id="form-success">Thank you! I'll get back to you soon.</p>
+      </form>
+    </section>
+
+    <!-- Footer with hidden reset the page so it will ask for the user's name for demo-->
+    <footer>
+      <p class="footer-logo">Learning to See</p>
+      <p class="footer-copy">&copy; Copyright 2026 Learning to See, all rights reserved.</p>
+      <span onclick="localStorage.removeItem('userName'); location.reload();" style="font-size:10px;color:#0a0a0a;cursor:pointer;user-select:none;">©</span>
+    </footer>
+
+  </div>
+
+  <!-- Lightbox -->
+  <div id="overlay" onclick="hideBig()">
+    <img id="big-img" src="" alt="">
+    <p id="close-hint">click anywhere to close</p>
+  </div>
+  <!-- Arrows are outside overlay so they don't close it when clicked -->
+  <button class="lb-arrow" id="lb-prev" onclick="prevImage()">&#8592;</button>
+  <button class="lb-arrow" id="lb-next" onclick="nextImage()">&#8594;</button>
+
+  <script>
+
+    /* 
+      Aperture for blur text elements
+       Shutter speed for lightbox speed
+       ISO for background brightness + grain 
+    */
+
+    var apertureLabels = ['f/1.4','f/2','f/2.8','f/4','f/5.6','f/8','f/11','f/16','f/22','f/32'];
+    var shutterLabels  = ['1/1000s','1/500s','1/250s','1/125s','1/60s','1/30s','1/15s','1/8s','1/4s','1/2s'];
+    var isoLabels      = ['100','200','400','800','1600','3200','6400','12800','25600','51200'];
+
+    var currentTransitionDuration = 0.15;
+
+    /* Blur text sections, photos stay sharp */
+    document.getElementById('aperture-slider').addEventListener('input', function() {
+      var val = parseInt(this.value);
+      document.getElementById('aperture-value').textContent = apertureLabels[val - 1];
+
+      /* f/1.4 and f/2 = heavy blur, f/2.8 = slight, f/4+ = no blur */
+      var blurMap = [10, 6, 3, 0, 0, 0, 0, 0, 0, 0];
+      var blur = blurMap[val - 1];
+      var filterStr = blur > 0 ? 'blur(' + blur + 'px)' : 'none';
+
+      /* Apply blur to text sections but not on the pictures */
+      var textSections = document.querySelectorAll('#hero .hero-text, #intro, #gear, #contact, footer');
+      for (var i = 0; i < textSections.length; i++) {
+        textSections[i].style.filter = filterStr;
+        textSections[i].style.transition = 'filter 0.3s ease';
+      }
+    });
+
+    /* Controls how fast lightbox image appears */
+    document.getElementById('shutter-slider').addEventListener('input', function() {
+      var val = parseInt(this.value);
+      document.getElementById('shutter-value').textContent = shutterLabels[val - 1];
+      /* 1/1000s = very fast (0.05s), 1/2s = very slow (1.2s) */
+      currentTransitionDuration = 0.05 + (val - 1) * 0.13;
+    });
+
+    /* Background brightness + animated canvas grain */
+    var grainInterval = null;
+
+    document.getElementById('iso-slider').addEventListener('input', function() {
+      var val = parseInt(this.value);
+      document.getElementById('iso-value').textContent = isoLabels[val - 1];
+
+      /* Change background lightness using CSS variables */
+      var lightness = (val - 1) * 2.5;
+      document.body.style.setProperty('--bg',      'hsl(30, 5%, ' + lightness + '%)');
+      document.body.style.setProperty('--bg-2',    'hsl(30, 5%, ' + (lightness + 2) + '%)');
+      document.body.style.setProperty('--bg-card', 'hsl(30, 5%, ' + (lightness + 4) + '%)');
+      document.getElementById('nav').style.backgroundColor = 'hsl(30, 5%, ' + lightness + '%)';
+
+      document.getElementById('hero').style.filter = 'brightness(' + (0.3 + (val - 1) * 0.19) + ')';
+
+      /* Canvas grain */
+      var canvas = document.getElementById('grain-canvas');
+      var ctx    = canvas.getContext('2d');
+
+      if (val >= 6) {
+        canvas.style.opacity = (val - 5) * 0.12;
+        if (grainInterval) { clearInterval(grainInterval); }
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        var dotCount = (val - 5) * 120;
+        grainInterval = setInterval(function() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (var d = 0; d < dotCount; d++) {
+            var x = Math.random() * canvas.width;
+            var y = Math.random() * canvas.height;
+            ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255,255,255,0.9)' 
+            : 'rgba(0,0,0,0.9)';
+            ctx.fillRect(x, y, 1, 1);
+          }
+        }, 60);
+      } else {
+        canvas.style.opacity = 0;
+        if (grainInterval) {
+          clearInterval(grainInterval);
+          grainInterval = null;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+    });
+
+    window.addEventListener('resize', function() {
+      var c = document.getElementById('grain-canvas');
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+    });
+
+
+    /* Greeting*/
+    var savedName = localStorage.getItem('userName');
+
+    if (savedName) {
+      document.getElementById('greeting-overlay').classList.add('hidden');
+      document.getElementById('welcome-bar').innerHTML =
+        savedName + ', would you like me to take a portrait for you? &nbsp;→&nbsp;<a href="#contact" style="color:inherit;text-decoration:underline;letter-spacing:0.1em;">Get in touch</a>';
+      document.getElementById('welcome-bar').classList.add('visible');
+      document.body.classList.add('has-welcome-bar');
+    }
+
+    document.getElementById('greeting-btn').addEventListener('click', function() {
+      var name = document.getElementById('greeting-input').value.trim();
+      if (name === '') {
+        document.getElementById('greeting-input').placeholder = 'Please enter your name';
+        return;
+      }
+      localStorage.setItem('userName', name);
+      document.getElementById('greeting-overlay').classList.add('hidden');
+      document.getElementById('welcome-bar').innerHTML =
+        name + ', would you like me to take a portrait for you? &nbsp;→&nbsp;<a href="#contact" style="color:inherit;text-decoration:underline;letter-spacing:0.1em;">Get in touch</a>';
+      document.getElementById('welcome-bar').classList.add('visible');
+      document.body.classList.add('has-welcome-bar');
+    });
+
+    document.getElementById('greeting-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { document.getElementById('greeting-btn').click(); }
+    });
+
+
+    /* Random pohotos selected */
+    var allPortraits = [
+      { src: './img/p02.jpg', alt: 'Man on bench' },
+      { src: './img/p03.jpg', alt: 'Kid on bench' },
+      { src: './img/p05.jpg', alt: 'Portrait' },
+      { src: './img/p06.jpg', alt: 'Portrait by window' },
+      { src: './img/p10.jpg', alt: 'Saxophone' },
+      { src: './img/p12.jpg', alt: 'Guitarist in the rain' },
+      { src: './img/p13.jpg', alt: 'Woman on ferry' },
+      { src: './img/p15.jpg', alt: 'Drummer' },
+      { src: './img/p16.jpg', alt: 'Chess player' },
+      { src: './img/p21.jpg', alt: 'People on stairs' },
+      { src: './img/p01.jpg', alt: 'Food' },
+      { src: './img/p04.jpg', alt: 'Buddha statue' },
+      { src: './img/p07.jpg', alt: 'Cat' },
+      { src: './img/p09.jpg', alt: 'Statue through circle' },
+      { src: './img/p17.jpg', alt: 'Temple courtyard' },
+      { src: './img/p18.jpg', alt: 'Car in golden light' },
+      { src: './img/p19.jpg', alt: 'Food close-up' },
+      { src: './img/p22.jpg', alt: 'City skyline at night' }
+    ];
+
+    var usedIndexes = []; 
+    var randomGrid  = document.getElementById('random-grid');
+
+    for (var k = 0; k < 8; k++) {
+      /* Pick a random index that hasn't been used yet */
+      var index;
+      do {
+        index = Math.floor(Math.random() * allPortraits.length);
+      } while (usedIndexes.indexOf(index) !== -1);
+      usedIndexes.push(index);
+
+      var photo  = allPortraits[index];
+      var figure = document.createElement('figure');
+      figure.className = 'gallery-item';
+
+      var img = document.createElement('img');
+      img.src = photo.src;
+      img.alt = photo.alt;
+      img.onclick = function() { showBig(this); };
+
+      figure.appendChild(img);
+      randomGrid.appendChild(figure);
+    }
+
+
+    /* Lightbox */
+
+    var currentIndex   = 0;
+    var lightboxImages = [];
+
+    function buildImageList() {
+      var allImgs = document.querySelectorAll('.gallery-item img');
+      lightboxImages = [];
+      for (var m = 0; m < allImgs.length; m++) {
+        lightboxImages.push(allImgs[m]);
+      }
+    }
+    buildImageList();
+
+    function showBig(img) {
+      buildImageList();
+      for (var n = 0; n < lightboxImages.length; n++) {
+        if (lightboxImages[n].src === img.src) { currentIndex = n; break; }
+      }
+      var bigImg = document.getElementById('big-img');
+
+      /* Fade out first */
+      bigImg.style.transition = 'opacity ' + currentTransitionDuration + 's ease';
+      bigImg.style.opacity = 0;
+
+      /* Wait for fade-out to finish, then swap image and fade in */
+      /* duration * 1000 converts seconds to milliseconds */
+      setTimeout(function() {
+        bigImg.src = img.src;
+        bigImg.alt = img.alt;
+        bigImg.style.opacity = 1;
+      }, currentTransitionDuration * 1000);
+
+      document.getElementById('overlay').classList.add('current');
+      document.getElementById('lb-prev').style.display = 'flex';
+      document.getElementById('lb-next').style.display = 'flex';
+    }
+
+    function hideBig() {
+      document.getElementById('overlay').classList.remove('current');
+      document.getElementById('lb-prev').style.display = 'none';
+      document.getElementById('lb-next').style.display = 'none';
+    }
+
+    /* Separate prev and next functions */
+    function prevImage() {
+      currentIndex = currentIndex - 1;
+      if (currentIndex < 0) { currentIndex = lightboxImages.length - 1; }
+      var bigImg = document.getElementById('big-img');
+      bigImg.style.transition = 'opacity ' + currentTransitionDuration + 's ease';
+      bigImg.style.opacity = 0;
+      setTimeout(function() {
+        bigImg.src = lightboxImages[currentIndex].src;
+        bigImg.alt = lightboxImages[currentIndex].alt;
+        bigImg.style.opacity = 1;
+      }, currentTransitionDuration * 1000);
+    }
+
+    function nextImage() {
+      currentIndex = currentIndex + 1;
+      if (currentIndex >= lightboxImages.length) { currentIndex = 0; }
+      var bigImg = document.getElementById('big-img');
+      bigImg.style.transition = 'opacity ' + currentTransitionDuration + 's ease';
+      bigImg.style.opacity = 0;
+      setTimeout(function() {
+        bigImg.src = lightboxImages[currentIndex].src;
+        bigImg.alt = lightboxImages[currentIndex].alt;
+        bigImg.style.opacity = 1;
+      }, currentTransitionDuration * 1000);
+    }
+
+    document.getElementById('lb-prev').style.display = 'none';
+    document.getElementById('lb-next').style.display = 'none';
+
+
+    /* Check the validation on contact information */
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var name    = document.getElementById('uname').value.trim();
+      var email   = document.getElementById('uemail').value.trim();
+      var message = document.getElementById('umsg').value.trim();
+      var isValid = true;
+
+      /* Check name */
+      if (name === '') {
+        document.getElementById('error-name').classList.add('visible');
+        isValid = false;
+      } else {
+        document.getElementById('error-name').classList.remove('visible');
+      }
+
+      /* Check email — must contain @ and a dot */
+      var emailOk = email !== '' && email.indexOf('@') !== -1 && email.indexOf('.') > email.indexOf('@');
+      if (!emailOk) {
+        document.getElementById('error-email').classList.add('visible');
+        isValid = false;
+      } else {
+        document.getElementById('error-email').classList.remove('visible');
+      }
+
+      /* Check message */
+      if (message === '') {
+        document.getElementById('error-msg').classList.add('visible');
+        isValid = false;
+      } else {
+        document.getElementById('error-msg').classList.remove('visible');
+      }
+
+      /* If vall valid then show success message */
+      if (isValid) {
+        document.getElementById('form-success').innerHTML = 'Thank you, ' + name + '! I\'ll get back to you soon.';
+        document.getElementById('form-success').classList.add('visible');
+        document.getElementById('uname').value    = '';
+        document.getElementById('uemail').value   = '';
+        document.getElementById('umsg').value     = '';
+      }
+    });
+
+    /* Clear error when user starts typing */
+    document.getElementById('uname').addEventListener('input', function() {
+      document.getElementById('error-name').classList.remove('visible');
+    });
+    document.getElementById('uemail').addEventListener('input', function() {
+      document.getElementById('error-email').classList.remove('visible');
+    });
+    document.getElementById('umsg').addEventListener('input', function() {
+      document.getElementById('error-msg').classList.remove('visible');
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var nav = document.getElementById('nav');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) { nav.classList.add('scrolled'); }
+        else { nav.classList.remove('scrolled'); }
+      });
+    });
+
+  </script>
+
+</body>
+</html>
